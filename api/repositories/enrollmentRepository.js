@@ -54,3 +54,17 @@ exports.getStudentFinishedCourses = (studentId) => {
 
     return studentCourses
 }
+
+exports.changeEnrollmentStatus = (studentId, courseId, status) => {
+    const enrollment = database.enrollments.find(
+        (enrollment) => enrollment.studentId === studentId && enrollment.courseId === courseId
+    );
+
+    if (!enrollment) {
+        return null;
+    }
+
+    enrollment.status = status;
+
+    return enrollment;
+}

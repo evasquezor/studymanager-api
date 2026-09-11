@@ -77,3 +77,33 @@ exports.getStudentFinishedCourses = (req, res) => {
         finishesCourses : StudentFinishedEnrollments
     })
 }
+
+exports.changeEnrollmentStatus = (req, res) => {
+    const studentId = Number(req.params.studentId);
+    const courseId = Number(req.params.courseId);
+    const status = req.body.status;
+    const allowedStatuses = ["PLANNED", "ENROLLED", "IN_PROGRESS", "FINISHED"];
+
+    if (!allowedStatuses.includes(status)) {
+        return res.status(400).json({
+            message: "status must be one of: " + allowedStatuses.join(", ")
+        });
+    }
+
+    const enrollment = enrollmentRepository.changeEnrollmentStatus(
+        studentId,
+        courseId,
+        status
+    );
+
+    if (!enrollment) {
+        return res.status(404).json({
+            message: "Enrollment for student " + studentId + " and course " + courseId + " was not found"
+        });
+    }
+
+    return res.json({
+        message: "Enrollment status was changed successfully",
+        enrollment
+    });
+}
