@@ -2,6 +2,14 @@ const enrollmentRepository = require("../repositories/enrollmentRepository")
 const studentRepository = require("../repositories/studentRepository")
 const courseRepository = require ("../repositories/courseRepository")
 
+exports.getAllEnrollments = (req,res) => {
+    const enrollments = enrollmentRepository.getAllEnrollments();
+
+    res.json({
+        enrollments: enrollments
+    })
+}
+
 exports.enrollStudent = (req, res) => {
     
     const studentId = Number(req.params.studentId);
@@ -106,4 +114,23 @@ exports.changeEnrollmentStatus = (req, res) => {
         message: "Enrollment status was changed successfully",
         enrollment
     });
+}
+
+exports.deleteEnrollment = (req, res) => {
+    const enrollmentId = Number(req.params.enrollmentId);
+
+    const deleteEnrollment = enrollmentRepository.deleteEnrollment(enrollmentId);
+
+    if (!deleteEnrollment) {
+        return res.status(404).json({
+            message : "Enrollment was not found"
+        })
+    }
+
+    res.json({
+        message: "Enrollment with id: " + deleteEnrollment.id + " was deleted",
+        enrollment: deleteEnrollment,
+        enrollments: enrollmentRepository.getAllEnrollments()
+
+    })
 }

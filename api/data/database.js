@@ -1,5 +1,5 @@
 let students = [
-    { firstName: "John", lastName: "Smith", id: 1, degreeProgramID:1 },
+    { firstName: "John", lastName: "Smith", id: 1, degreeProgramID: 1 },
     { firstName: "Emma", lastName: "Johnson", id: 2, degreeProgramID: 1 },
     { firstName: "Michael", lastName: "Brown", id: 3, degreeProgramID: 1 },
     { firstName: "Olivia", lastName: "Davis", id: 4, degreeProgramID: 2 },
@@ -140,11 +140,11 @@ let degreePrograms = [
 ];
 
 let enrollments = [
-    { studentId: 1, courseId: 1, status: "PLANNED"},
-    { studentId: 1, courseId: 2, status: "PLANNED"},
-    { studentId: 1, courseId: 3, status: "PLANNED"},
-    { studentId: 2, courseId: 1, status: "PLANNED"},
-    { studentId: 3, courseId: 1, status: "PLANNED"},
+    { id: 1, studentId: 1, courseId: 1, status: "PLANNED" },
+    { id: 2, studentId: 1, courseId: 2, status: "PLANNED" },
+    { id: 3, studentId: 1, courseId: 3, status: "PLANNED" },
+    { id: 4, studentId: 2, courseId: 1, status: "PLANNED" },
+    { id: 5, studentId: 3, courseId: 1, status: "PLANNED" },
 ]
 
 

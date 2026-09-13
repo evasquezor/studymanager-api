@@ -1,7 +1,16 @@
 const database = require("../data/database.js");
 
+exports.getAllEnrollments = () => {
+    return database.enrollments
+}
 exports.enrollStudent = (studentId, courseId, status) => {
+
+     const newId = database.enrollments.length > 0
+            ? Math.max(...database.enrollments.map(enrollment => enrollment.id)) + 1
+            : 1;
+
     const newEnrollment = {
+        id: newId,
         studentId: studentId,
         courseId: courseId,
         status: status
@@ -65,6 +74,20 @@ exports.changeEnrollmentStatus = (studentId, courseId, status) => {
     }
 
     enrollment.status = status;
-
+ 
     return enrollment;
+}
+
+exports.deleteEnrollment = (enrollmentId) => {
+    const enrollmentIndex = database.enrollments.findIndex(enrollment => enrollment.id === enrollmentId);
+    
+        if (enrollmentIndex === -1) {
+            return null;
+        }
+    
+        const deletedEnrollment = database.enrollments[enrollmentIndex];
+    
+        database.enrollments.splice(enrollmentIndex, 1);
+    
+        return deletedEnrollment;
 }

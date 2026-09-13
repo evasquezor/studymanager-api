@@ -19,6 +19,10 @@ router.patch(
     enrollmentController.changeEnrollmentStatus
 )
 
+router.delete("/enrollment/:enrollmentId/delete", enrollmentController.deleteEnrollment)
+
+router.get("/enrollments", enrollmentController.getAllEnrollments)
+
 
 module.exports = router;
 
