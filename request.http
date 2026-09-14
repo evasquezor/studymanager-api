@@ -33,3 +33,11 @@ Content-Type: application/json
 {
     "grade": 3
 }
+
+### Try to update a grade from a not Finisched enrollment
+PATCH http://localhost:3000/enrollment/5/grade
+Content-Type: application/json
+
+{
+    "grade": 3
+}

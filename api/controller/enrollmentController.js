@@ -142,8 +142,14 @@ exports.setGrade = (req, res) => {
     const enrollment = enrollmentRepository.setGrade(enrollmentId, grade);
 
     if (!enrollment) {
-       return res.status(404).json({
+       return res.status(404).json({ // Code 404 für Was not found
             message: "Enrollment with id: " +  enrollmentId + " was not found"
+        })
+    }
+
+    if (enrollment.status !== "FINISHED") {
+        return res.status(400).json({ // Code 400 für Bad request
+            message: "Enrollment with id: " + enrollmentId + " has not been Finished"
         })
     }
 
