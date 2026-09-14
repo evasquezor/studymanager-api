@@ -134,3 +134,20 @@ exports.deleteEnrollment = (req, res) => {
 
     })
 }
+
+exports.setGrade = (req, res) => {
+    const enrollmentId = Number(req.params.enrollmentId);
+    const grade = Number(req.body.grade);
+
+    const enrollment = enrollmentRepository.setGrade(enrollmentId, grade);
+
+    if (!enrollment) {
+       return res.status(404).json({
+            message: "Enrollment with id: " +  enrollmentId + " was not found"
+        })
+    }
+
+    res.status(202).json({
+        enrollment: enrollment
+    });
+}

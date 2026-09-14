@@ -91,3 +91,15 @@ exports.deleteEnrollment = (enrollmentId) => {
     
         return deletedEnrollment;
 }
+
+exports.setGrade = (enrollmentId, grade) => {
+    const enrollment = database.enrollments.find((enrollment) => enrollment.id === enrollmentId);
+
+    if (!enrollment) {
+        return null
+    }
+
+    enrollment.grade = grade;
+
+    return enrollment;
+}

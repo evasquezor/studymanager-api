@@ -1,0 +1,35 @@
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "name": "Cloud Computing",
+    "ects": 6,
+    "semester": 5,
+    "degreeProgramID": 1,
+    "type": "ELECTIVE"
+}
+### Alle Courses
+GET http://localhost:3000/courses
+
+### Get ein Course nach einer gegebener ID
+GEt http://localhost:3000/courses/18
+
+### get all enrollments from a student 
+POST http://localhost:3000/students/5/courses/1/enroll
+
+### get all finished enrollments from a studeent
+GET http://localhost:3000/students/1/enrollments/finished
+
+###  get all enrollments
+GET http://localhost:3000/enrollments
+
+### Delete given Enrolment
+DELETE http://localhost:3000/enrollment/4/delete
+
+### Update grade from a given enrollment
+PATCH http://localhost:3000/enrollment/1/grade
+Content-Type: application/json
+
+{
+    "grade": 3
+}

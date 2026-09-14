@@ -140,11 +140,11 @@ let degreePrograms = [
 ];
 
 let enrollments = [
-    { id: 1, studentId: 1, courseId: 1, status: "PLANNED" },
-    { id: 2, studentId: 1, courseId: 2, status: "PLANNED" },
-    { id: 3, studentId: 1, courseId: 3, status: "PLANNED" },
-    { id: 4, studentId: 2, courseId: 1, status: "PLANNED" },
-    { id: 5, studentId: 3, courseId: 1, status: "PLANNED" },
+    { id: 1, studentId: 1, courseId: 1, status: "PLANNED", grade: "" },
+    { id: 2, studentId: 1, courseId: 2, status: "PLANNED", grade: "" },
+    { id: 3, studentId: 1, courseId: 3, status: "PLANNED", grade: "" },
+    { id: 4, studentId: 2, courseId: 1, status: "PLANNED", grade: "" },
+    { id: 5, studentId: 3, courseId: 1, status: "PLANNED", grade: "" },
 ]
 
 

@@ -10,7 +10,7 @@ router.post(
     enrollmentController.enrollStudent
 );
 
-router.get("/students/:studentId/enrollments", enrollmentController.getStudentEnrollments)
+router.get("/students/:studentId/enrollments", enrollmentController.getStudentEnrollments);
 
 router.get("/students/:studentId/enrollments/finished", enrollmentController.getStudentFinishedCourses)
 
@@ -22,6 +22,8 @@ router.patch(
 router.delete("/enrollment/:enrollmentId/delete", enrollmentController.deleteEnrollment)
 
 router.get("/enrollments", enrollmentController.getAllEnrollments)
+
+router.patch("/enrollment/:enrollmentId/grade", enrollmentController.setGrade)
 
 
 module.exports = router;
