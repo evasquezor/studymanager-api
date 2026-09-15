@@ -21,6 +21,7 @@ exports.enrollStudent = (studentId, courseId, status) => {
     return newEnrollment;
 }
 
+// TODO: soll enrollments zurückgeben nicht courses
 exports.getStudentsEnrollments = (studentId) => {
     const enrollments = database.enrollments;
     const courses = database.courses;
@@ -38,10 +39,11 @@ exports.getStudentsEnrollments = (studentId) => {
     );
 
     return studentCourses
-    
-}
 
+}
+// TODO: Muss in service rein oder angepasst werden 
 exports.getStudentFinishedCourses = (studentId) => {
+
     const enrollments = database.enrollments;
     const courses = database.courses;
 

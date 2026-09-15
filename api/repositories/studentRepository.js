@@ -1,4 +1,5 @@
 const database = require("../data/database.js");
+const enrollmentRepository = require("../repositories/enrollmentRepository")
 
 exports.findAllStudents = () => {
     return database.students;
@@ -60,3 +61,4 @@ exports.assignStudentToDegreeProgram = (studentID, degreeProgramID) => {
 
     return student;
 }
+

@@ -6,8 +6,8 @@ exports.getAllCourses = () => {
 
 
 exports.getCourseById = (id) => {
-    return database.courses.find(
-        course => course.id === Number(id)
+    return database.courses.filter(
+        course => courseIds.includes(course.id)
     );
 };
 

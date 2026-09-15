@@ -18,7 +18,7 @@ let courses = [
     {
         id: 2,
         name: "Datenbanken",
-        ects: 6,
+        ects: 5,
         semester: 2,
         degreeProgramID: 1,
         type: "MANDATORY"
@@ -34,7 +34,7 @@ let courses = [
     {
         id: 4,
         name: "Webentwicklung",
-        ects: 3,
+        ects: 5,
         semester: 3,
         degreeProgramID: 1,
         type: "ELECTIVE"
@@ -129,7 +129,7 @@ let courses = [
         degreeProgramID: 3,
         type: "MANDATORY"
     }
-]
+];
 
 
 
