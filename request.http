@@ -20,6 +20,15 @@ GET http://localhost:3000/students/1/enrollments
 ### get all finished enrollments from a studeent
 GET http://localhost:3000/students/1/enrollments/finished
 
+### Abgeschlossene ECTS eines Studenten
+GET http://localhost:3000/students/1/ects/completed
+
+### returns the remaining etcs form a student 
+GET http://localhost:3000/students/1/ects/remaining
+
+### Gets the percentage of the finishees etcs from a given student
+GET http://localhost:3000/students/1/progress
+
 ###  get all enrollments
 GET http://localhost:3000/enrollments
 
@@ -41,3 +50,5 @@ Content-Type: application/json
 {
     "grade": 3
 }
+
+###

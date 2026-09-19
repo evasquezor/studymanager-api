@@ -21,27 +21,14 @@ exports.enrollStudent = (studentId, courseId, status) => {
     return newEnrollment;
 }
 
-// TODO: soll enrollments zurückgeben nicht courses
 exports.getStudentsEnrollments = (studentId) => {
     const enrollments = database.enrollments;
-    const courses = database.courses;
-
-    const studentEnrollments = enrollments.filter(
-        (enrollment) => enrollment.studentId == studentId
-    )
-
-    const studentCoursesId = studentEnrollments.map(
-        (enrollment) => enrollment.courseId
+    return enrollments.filter(
+        (enrollment) => enrollment.studentId === Number(studentId)
     );
-
-    const studentCourses = courses.filter((course) =>
-        studentCoursesId.includes(course.id)
-    );
-
-    return studentCourses
 
 }
-// TODO: Muss in service rein oder angepasst werden 
+
 exports.getStudentFinishedCourses = (studentId) => {
 
     const enrollments = database.enrollments;

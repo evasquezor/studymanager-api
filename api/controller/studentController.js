@@ -1,4 +1,5 @@
 const studentRepository = require("../repositories/studentRepository");
+const studentService = require("../services/studentService");
 
 exports.getAllStudents = (req, res) => {
     const students = studentRepository.findAllStudents();
@@ -21,6 +22,69 @@ exports.getStudentById = (req, res) => {
 
     res.json({
         student: actualStudent
+    });
+};
+
+exports.getStudentEctsProgress = (req, res) => {
+    const studentId = Number(req.params.id);
+    const ectsProgress = studentService.getStudentCompletedCoursesECTS(studentId);
+
+    if (!ectsProgress) {
+        res.status(404).json({
+            message: "Student or degree program was not found"
+        });
+        return null;
+    }
+
+    return res.json(ectsProgress);
+};
+
+const getStudentEctsProgress = (req, res) => {
+    const studentId = Number(req.params.studentId);
+    const ectsProgress = studentService.getStudentCompletedCoursesECTS(studentId);
+
+    if (!ectsProgress) {
+        return res.status(404).json({
+            message: "Student or degree program was not found"
+        });
+    }
+
+    return ectsProgress;
+};
+
+exports.getCompletedEcts = (req, res) => {
+    const ectsProgress = getStudentEctsProgress(req, res);
+
+    if (!ectsProgress) {
+        return;
+    }
+
+    return res.json({
+        completedEcts: ectsProgress.completedEcts
+    });
+};
+
+exports.getRemainingEcts = (req, res) => {
+    const ectsProgress = getStudentEctsProgress(req, res);
+
+    if (!ectsProgress) {
+        return;
+    }
+
+    return res.json({
+        remainingEcts: ectsProgress.remainingEcts
+    });
+};
+
+exports.getStudentProgress = (req, res) => {
+    const ectsProgress = getStudentEctsProgress(req, res);
+
+    if (!ectsProgress) {
+        return;
+    }
+
+    return res.json({
+        progressPercentage: ectsProgress.progressPercentage
     });
 };
 
