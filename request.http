@@ -20,7 +20,7 @@ GET http://localhost:3000/students/1/enrollments
 ### get all finished enrollments from a studeent
 GET http://localhost:3000/students/1/enrollments/finished
 
-### Abgeschlossene ECTS eines Studenten
+### returns the completed etcs from a student
 GET http://localhost:3000/students/1/ects/completed
 
 ### returns the remaining etcs form a student 
