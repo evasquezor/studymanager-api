@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express();
 const PORT = 3000;
+const pool = require("./database/connection");
 
 const studentRoutes = require("./routes/studentRoutes.js")
 const courseRoutes = require("./routes/courseRoutes.js")
@@ -22,3 +23,11 @@ app.get("/", (req, res) => {
 app.listen(PORT, () =>{
     console.log(`Server läuft auf http://localhost:${PORT} `)
 })
+
+pool.query("SELECT NOW()")
+    .then(result => {
+        console.log("Database connected:", result.rows[0]);
+    })
+    .catch(error => {
+        console.error("Database connection failed:", error);
+    });
