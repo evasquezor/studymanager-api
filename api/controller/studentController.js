@@ -1,28 +1,63 @@
 const studentRepository = require("../repositories/studentRepository");
 const studentService = require("../services/studentService");
 
-exports.getAllStudents = (req, res) => {
-    const students = studentRepository.findAllStudents();
+exports.getAllStudents = async (req, res) => {
+    try {
+        const students = await studentRepository.findAllStudents();
 
-    res.json({
-        students: students
-    });
+        res.json({
+            students: students
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    }
 };
 
-exports.getStudentById = (req, res) => {
-    const id = Number(req.params.id);
+exports.getStudentById = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
 
-    const actualStudent = studentRepository.findStudentById(id);
+        if (!Number.isInteger(id)) {
+            return res.status(400).json({ error: "Ungültige ID" });
+        } 
 
-    if (!actualStudent) {
-        return res.status(404).json({
-            message: "Student with id: " + id + " was not found"
+        const actualStudent = await studentRepository.findStudentById(id);
+
+        if (!actualStudent) {
+            return res.status(404).json({ error: "Student nicht gefunden"})
+        }
+
+        res.json({
+            student: actualStudent
         });
+    } catch(err){
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
     }
+};
 
-    res.json({
-        student: actualStudent
-    });
+exports.addStudent = async (req, res) => {
+    try{
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+
+        if (!firstName || !lastName) {
+            return res.status(400).json({
+                message: "firstName and lastName are required"
+            });
+        }
+
+        const newStudent =  await studentRepository.addStudent(firstName, lastName);
+
+        res.status(201).json({
+            message: "Student was created successfully",
+            student: newStudent
+        });
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    }
 };
 
 exports.getStudentEctsProgress = (req, res) => {
@@ -88,23 +123,7 @@ exports.getStudentProgress = (req, res) => {
     });
 };
 
-exports.addStudent = (req, res) => {
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
 
-    if (!firstName || !lastName) {
-        return res.status(400).json({
-            message: "firstName and lastName are required"
-        });
-    }
-
-    const newStudent = studentRepository.addStudent(firstName, lastName);
-
-    res.status(201).json({
-        message: "Student was created successfully",
-        student: newStudent
-    });
-};
 
 exports.deleteStudent = (req, res) => {
     const id = Number(req.params.id);

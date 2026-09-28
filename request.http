@@ -51,4 +51,18 @@ Content-Type: application/json
     "grade": 3
 }
 
+### GET ALL STUDENT
+
+GET http://localhost:3000/students/
+
 ###
+GET http://localhost:3000/students/6
+
+###
+POST http://localhost:3000/students/
+Content-Type: application/json
+
+{
+    "firstName": "luffy",
+    "lastName": "monkey"
+}

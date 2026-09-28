@@ -1,28 +1,37 @@
-const database = require("../data/database.js");
+// const database = require("../data/database.js");
+const pool = require("../database/connection") 
 const enrollmentRepository = require("../repositories/enrollmentRepository")
 
-exports.findAllStudents = () => {
-    return database.students;
+const STUDENT_COLUMNS = `
+    id,
+    first_name AS "firtsName",
+    last_name AS "lastName",
+    degree_program_id AS "degreeProgramID"
+`;
+
+exports.findAllStudents = async () => {
+    const result = await pool.query(
+        `SELECT ${STUDENT_COLUMNS} FROM students ORDER BY id`
+    );
+
+    return result.rows;
 };
 
-exports.findStudentById = (id) => {
-    return database.students.find(student => student.id === id);
+exports.findStudentById = async (id) => {
+    const result = await pool.query(
+        `SELECT ${STUDENT_COLUMNS} FROM students WHERE id = $1`,
+        [id]
+    );
+    return result.rows[0] || null;
 };
 
-exports.addStudent = (firstName, lastName) => {
-    const newId = database.students.length > 0
-        ? Math.max(...database.students.map(student => student.id)) + 1
-        : 1;
+exports.addStudent =  async (firstName, lastName) => {
+    const result = await pool.query(
+        `INSERT INTO students (first_name, last_name) VALUES ($1, $2) RETURNING ${STUDENT_COLUMNS}`,
+        [firstName, lastName]
+    );
 
-    const newStudent = {
-        id: newId,
-        firstName: firstName,
-        lastName: lastName
-    };
-
-    database.students.push(newStudent);
-
-    return newStudent;
+    return result.rows[0] || null;
 };
 
 exports.deleteStudent = (id) => {
