@@ -43,16 +43,14 @@ exports.deleteStudent = async (id) => {
     return result.rows[0] || null;
 };
 
-exports.getStudentDegreeProgramm = (id) => {
-    const student = database.students.find(student => student.id === Number(id));
-    const degreeProgramId = student.degreeProgramID;
+exports.getStudentDegreeProgramm = async (id) => {
 
-    if (!student) {
-        return null;
-    }
+    const result = await pool.query(
+        `SELECT degree_programs.name FROM degree_programs JOIN students ON degree_programs.id = students.degree_program_id WHERE students.id = $1`,
+        [id]
+    )
 
-
-    return database.degreePrograms.find(degreeProgramm => degreeProgramm.id === degreeProgramId);
+    return result.rows[0] || null;
 }
 
 exports.assignStudentToDegreeProgram = (studentID, degreeProgramID) => {

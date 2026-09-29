@@ -63,10 +63,12 @@ POST http://localhost:3000/students/
 Content-Type: application/json
 
 {
-    "firstName": "luffy",
-    "lastName": "monkey"
+    "firstName": "Zorro",
+    "lastName": "Ronoroa"
 }
 
 ### delete a student
-DELETE http://localhost:3000/students/8
+DELETE http://localhost:3000/students/5
 
+### get the degree Progamm from a given student
+GET http://localhost:3000/students/3/degree-program
