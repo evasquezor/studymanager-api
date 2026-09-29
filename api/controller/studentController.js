@@ -60,6 +60,33 @@ exports.addStudent = async (req, res) => {
     }
 };
 
+exports.deleteStudent = async (req, res) => {
+
+    try{
+        const id = Number(req.params.id);
+
+        if (!Number.isInteger(id)) {
+            return res.status(400).json({error: "Ungültige ID"});
+        };
+
+        const deletedStudent = await studentRepository.deleteStudent(id);
+        
+        if (!deletedStudent) {
+            return res.status(404).json({
+                message: "Student not found"
+            });
+        }
+
+        res.json({
+            message: deletedStudent.firtsName + " " + deletedStudent.lastName   + " was removed",
+            student: deletedStudent
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    }
+};
+
 exports.getStudentEctsProgress = (req, res) => {
     const studentId = Number(req.params.id);
     const ectsProgress = studentService.getStudentCompletedCoursesECTS(studentId);
@@ -125,23 +152,7 @@ exports.getStudentProgress = (req, res) => {
 
 
 
-exports.deleteStudent = (req, res) => {
-    const id = Number(req.params.id);
 
-    const deletedStudent = studentRepository.deleteStudent(id);
-
-    if (!deletedStudent) {
-        return res.status(404).json({
-            message: "Student not found"
-        });
-    }
-
-    res.json({
-        message: deletedStudent.firstName + " " + deletedStudent.lastName + " was removed",
-        student: deletedStudent,
-        students: studentRepository.findAllStudents()
-    });
-};
 
 exports.getStudentDegreeProgramm = (req, res) => {
     const studentId = Number(req.params.id)

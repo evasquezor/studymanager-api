@@ -67,4 +67,6 @@ Content-Type: application/json
     "lastName": "monkey"
 }
 
-##ätest
+### delete a student
+DELETE http://localhost:3000/students/8
+

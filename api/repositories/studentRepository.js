@@ -34,18 +34,13 @@ exports.addStudent =  async (firstName, lastName) => {
     return result.rows[0] || null;
 };
 
-exports.deleteStudent = (id) => {
-    const studentIndex = database.students.findIndex(student => student.id === id);
+exports.deleteStudent = async (id) => {
+    const result = await pool.query(
+        `DELETE FROM students WHERE id = $1 RETURNING ${STUDENT_COLUMNS}`,
+        [id]
+    );
 
-    if (studentIndex === -1) {
-        return null;
-    }
-
-    const deletedStudent = database.students[studentIndex];
-
-    database.students.splice(studentIndex, 1);
-
-    return deletedStudent;
+    return result.rows[0] || null;
 };
 
 exports.getStudentDegreeProgramm = (id) => {
