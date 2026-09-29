@@ -114,20 +114,39 @@ exports.getStudentDegreeProgramm = async (req, res) => {
     }
 }
 
-exports.assignStudentToDegreeProgram = (req, res) => {
-    const studentID = Number(req.params.studentID);
-    const degreeProgramID = Number(req.params.degreeProgramID);
+exports.assignStudentToDegreeProgram = async (req, res) => {
+    
+    try {
+        const studentID = Number(req.params.studentID);
+        const degreeProgramID = Number(req.params.degreeProgramID);
+
+        if (!Number.isInteger(studentID) || !Number.isInteger(degreeProgramID)) {
+            return res.status(400).json({ error: "Ungültige ID"})
+        }
+
+        const updatedStudent = await studentRepository.assignStudentToDegreeProgram(studentID, degreeProgramID);
+
+        if (!updatedStudent) {
+            return res.status(404).json({
+                message: "Student not found"
+            })
+        }
+
+        res.json({
+            student: updatedStudent
+        })
+
+    } catch (err) {
+        if (err.code === "FK_VIOLATION") {
+            return res.status(404).json({ error: err.message});
+        }
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    }
+    
     
 
-    if (!studentID) {
-        return res.status(404).json({
-            message: "Student with " + studentID + "was not found"
-        })
-    } else if (!degreeProgramID) {
-        return res.status(404).json({
-            message: "DegreeProgram with " + degreeProgramID + "was not found"
-        })
-    }
+    
 
     studentRepository.assignStudentToDegreeProgram(studentID, degreeProgramID);
 

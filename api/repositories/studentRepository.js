@@ -44,7 +44,6 @@ exports.deleteStudent = async (id) => {
 };
 
 exports.getStudentDegreeProgramm = async (id) => {
-
     const result = await pool.query(
         `SELECT degree_programs.name FROM degree_programs JOIN students ON degree_programs.id = students.degree_program_id WHERE students.id = $1`,
         [id]
@@ -53,14 +52,21 @@ exports.getStudentDegreeProgramm = async (id) => {
     return result.rows[0] || null;
 }
 
-exports.assignStudentToDegreeProgram = (studentID, degreeProgramID) => {
-    const student = database.students.find(student => student.id === Number(studentID));
-    const degreeProgram = database.degreePrograms.find(degreeProgram => degreeProgram.id === Number(degreeProgramID));
+exports.assignStudentToDegreeProgram = async (studentID, degreeProgramID) => {
+    try{
+        const result = await pool.query(
+        `UPDATE students SET degree_program_id = $1 WHERE id = $2 RETURNING ${STUDENT_COLUMNS}`,
+        [degreeProgramID, studentID ]
+        );
 
-    if (!student || !degreeProgram) return null;
-
-    student.degreeProgramID = degreeProgram.id
-
-    return student;
+        return result.rows[0] || null;
+    } catch (err) {
+        if (err.code === "23503") {
+            const error = new Error("Degree program does not exist");
+            error.code = "FK_VIOLATION";
+            throw error;
+        }
+        throw err;
+    }
 }
 

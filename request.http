@@ -71,4 +71,9 @@ Content-Type: application/json
 DELETE http://localhost:3000/students/5
 
 ### get the degree Progamm from a given student
-GET http://localhost:3000/students/3/degree-program
+GET http://localhost:3000/students/4/degree-program
+
+
+### assign a degree Programm to a student
+
+PUT http://localhost:3000/students/7/degree-program/3
