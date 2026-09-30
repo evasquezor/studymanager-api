@@ -35,79 +35,74 @@ exports.getCourseById = async (req, res) => {
     };
 };
 
+exports.addCourse = async (req, res) => {
+    try {
+        const {
+            name,
+            ects,
+            semester,
+            degreeProgramID,
+            type
+        } = req.body;
 
-exports.addCourse = (req, res) => {
+        if (!name || ects === undefined || semester === undefined || !degreeProgramID || !type) {
+            return res.status(400).json({
+                message: "name, ects, semester, degreeProgramID and type are required"
+            });
+        }
 
-    const {
-        name,
-        ects,
-        semester,
-        degreeProgramID,
-        type
-    } = req.body;
+        if (typeof name !== "string" || name.trim() === "") {
+            return res.status(400).json({
+                message: "name must be a non-empty string"
+            });
+        }
 
+        if (typeof ects !== "number" || ects <= 0) {
+            return res.status(400).json({
+                message: "ects must be a positive number"
+            });
+        }
 
-    if (!name || ects === undefined || semester === undefined || !degreeProgramID || !type) {
-        return res.status(400).json({
-            message: "name, ects, semester, degreeProgramID and type are required"
+        if (!Number.isInteger(semester) || semester <= 0) {
+            return res.status(400).json({
+                message: "semester must be a positive integer"
+            });
+        }
+
+        if (!Number.isInteger(degreeProgramID) || degreeProgramID <= 0) {
+            return res.status(400).json({
+                message: "degreeProgramID must be a positive integer"
+            });
+        }
+
+        const validTypes = ["MANDATORY", "ELECTIVE", "VOLUNTARY"];
+
+        if (!validTypes.includes(type)) {
+            return res.status(400).json({
+                message: "type must be MANDATORY, ELECTIVE or VOLUNTARY"
+            });
+        }
+
+        const newCourse = await courseRepository.addCourse(
+            name,
+            ects,
+            semester,
+            degreeProgramID,
+            type
+        );
+
+        res.status(201).json({
+            message: "Course was created successfully",
+            course: newCourse
         });
+
+    } catch (err) {
+        if (err.code === "23503") {
+            return res.status(404).json({ message: "degreeProgramID does not exist" });
+        }
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
     }
-
-
-    if (typeof name !== "string" || name.trim() === "") {
-        return res.status(400).json({
-            message: "name must be a non-empty string"
-        });
-    }
-
-
-    if (typeof ects !== "number" || ects <= 0) {
-        return res.status(400).json({
-            message: "ects must be a positive number"
-        });
-    }
-
-
-    if (!Number.isInteger(semester) || semester <= 0) {
-        return res.status(400).json({
-            message: "semester must be a positive integer"
-        });
-    }
-
-
-    if (!Number.isInteger(degreeProgramID) || degreeProgramID <= 0) {
-        return res.status(400).json({
-            message: "degreeProgramID must be a positive integer"
-        });
-    }
-
-
-    const validTypes = [
-        "MANDATORY",
-        "ELECTIVE",
-        "VOLUNTARY"
-    ];
-
-    if (!validTypes.includes(type)) {
-        return res.status(400).json({
-            message: "type must be MANDATORY, ELECTIVE or VOLUNTARY"
-        });
-    }
-
-
-    const newCourse = courseRepository.addCourse(
-        name,
-        ects,
-        semester,
-        degreeProgramID,
-        type
-    );
-
-
-    res.status(201).json({
-        message: "Course was created successfully",
-        course: newCourse
-    });
 };
 
 

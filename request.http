@@ -2,7 +2,7 @@ POST http://localhost:3000/courses
 Content-Type: application/json
 
 {
-    "name": "Cloud Computing",
+    "name": "ERP-Systeme",
     "ects": 6,
     "semester": 5,
     "degreeProgramID": 1,

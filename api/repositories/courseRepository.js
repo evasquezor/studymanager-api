@@ -29,24 +29,12 @@ exports.getCourseById = async (id) => {
 };
 
 
-exports.addCourse = (name, ects, semester, degreeProgramID, type) => {
-
-    const newId = database.courses.length > 0
-        ? Math.max(...database.courses.map(course => course.id)) + 1
-        : 1;
-
-    const newCourse = {
-        id: newId,
-        name: name,
-        ects: ects,
-        semester: semester,
-        degreeProgramID: degreeProgramID,
-        type: type
-    };
-
-    database.courses.push(newCourse);
-
-    return newCourse;
+exports.addCourse = async (name, ects, semester, degreeProgramID, type) => {
+    const result = await pool.query(
+        `INSERT INTO courses (name, ects, semester, degree_program_id, type) VALUES ($1, $2, $3, $4, $5) RETURNING ${COURSE_COLUMS}`,
+        [name, ects, semester, degreeProgramID, type]
+    )
+    return result.rows[0] || null;
 };
 
 
