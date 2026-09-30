@@ -19,10 +19,13 @@ exports.getAllCourses = async () => {
 };
 
 
-exports.getCourseById = (id) => {
-    return database.courses.filter(
-        course => courseIds.includes(course.id)
+exports.getCourseById = async (id) => {
+    const result = await pool.query(
+        `SELECT ${COURSE_COLUMS} FROM courses WHERE id = $1`,
+        [id]
     );
+
+    return result.rows[0] || null;
 };
 
 

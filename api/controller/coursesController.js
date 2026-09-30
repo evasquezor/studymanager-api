@@ -14,27 +14,25 @@ exports.getAllCourses = async (req, res) => {
 };
 
 
-exports.getCourseById = (req, res) => {
-
-    const id = Number(req.params.id);
-
-    if (!Number.isInteger(id)) {
-        return res.status(400).json({
-            message: "Invalid course id"
+exports.getCourseById = async (req, res) => {
+    try{
+        const id = Number(req.params.id);
+        if (!Number.isInteger(id)) {
+            return res.status(400).json({
+                message: "Invalid course id"
+            });
+        };
+        const course =  await courseRepository.getCourseById(id);
+        if (!course) {
+            res.status(400).json({ error: "Course with id: " + id + " does not exist"})
+        }
+        res.json({
+            course: course
         });
-    }
-
-    const course = courseRepository.getCourseById(id);
-
-    if (!course) {
-        return res.status(404).json({
-            message: "Course with id " + id + " was not found"
-        });
-    }
-
-    res.json({
-        course: course
-    });
+     } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    };
 };
 
 

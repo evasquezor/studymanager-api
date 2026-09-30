@@ -12,7 +12,7 @@ Content-Type: application/json
 GET http://localhost:3000/courses
 
 ### Get ein Course nach einer gegebener ID
-GEt http://localhost:3000/courses/18
+GEt http://localhost:3000/courses/2
 
 ### get all enrollments from a student 
 GET http://localhost:3000/students/1/enrollments
