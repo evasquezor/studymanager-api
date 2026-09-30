@@ -1,7 +1,21 @@
 const database = require("../data/database.js");
+const pool = require("../database/connection") 
 
-exports.getAllCourses = () => {
-    return database.courses;
+const COURSE_COLUMS = `
+    id,
+    name,
+    ects,
+    semester,
+    degree_program_id,
+    type
+`;
+
+exports.getAllCourses = async () => {
+    const result = await pool.query(
+        `SELECT ${COURSE_COLUMS} FROM courses ORDER BY id`
+    );
+
+    return result.rows || null;
 };
 
 

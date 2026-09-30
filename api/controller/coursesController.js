@@ -1,13 +1,16 @@
 const courseRepository = require("../repositories/courseRepository");
 
 
-exports.getAllCourses = (req, res) => {
-
-    const courses = courseRepository.getAllCourses();
-
-    res.json({
+exports.getAllCourses = async (req, res) => {
+    try {
+        const courses =  await courseRepository.getAllCourses();
+        res.json({
         courses: courses
     });
+    }catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    }
 };
 
 
