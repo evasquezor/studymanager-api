@@ -54,21 +54,13 @@ exports.updateCourse = async (id, name, ects, semester, degreeProgramID, type) =
 };
 
 
-exports.deleteCourse = (id) => {
-
-    const courseIndex = database.courses.findIndex(
-        course => course.id === Number(id)
+exports.deleteCourse = async (id) => {
+    const result = await pool.query(
+        `DELETE FROM courses WHERE id = $1 RETURNING ${COURSE_COLUMS}`,
+        [id]
     );
 
-    if (courseIndex === -1) {
-        return null;
-    }
-
-    const deletedCourse = database.courses[courseIndex];
-
-    database.courses.splice(courseIndex, 1);
-
-    return deletedCourse;
+    return result.rows[0] || null;
 };
 
 

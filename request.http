@@ -89,3 +89,6 @@ Content-Type: application/json
     "degreeProgramID": 1,
     "type": "VOLUNTARY"
 }
+
+### Delete a course
+DELETE http://localhost:3000/courses/16

@@ -172,28 +172,29 @@ exports.updateCourse = async (req, res) => {
 };
 
 
-exports.deleteCourse = (req, res) => {
-
-    const id = Number(req.params.id);
-
-    if (!Number.isInteger(id)) {
-        return res.status(400).json({
-            message: "Invalid course id"
+exports.deleteCourse =  async (req, res) => {
+    try{
+        const id = Number(req.params.id);
+        if (!Number.isInteger(id)) {
+            return res.status(400).json({
+                message: "Invalid course id"
+            });
+        }
+        const deletedCourse = await courseRepository.deleteCourse(id);
+        if (!deletedCourse) {
+            return res.status(404).json({
+                message: "Course with id " + id + " was not found"
+            });
+        };
+        res.json({
+            message: "Course was deleted successfully",
+            course: deletedCourse
         });
+
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
     }
-
-    const deletedCourse = courseRepository.deleteCourse(id);
-
-    if (!deletedCourse) {
-        return res.status(404).json({
-            message: "Course with id " + id + " was not found"
-        });
-    }
-
-    res.json({
-        message: "Course was deleted successfully",
-        course: deletedCourse
-    });
 };
 
 
