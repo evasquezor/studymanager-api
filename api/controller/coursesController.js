@@ -106,66 +106,69 @@ exports.addCourse = async (req, res) => {
 };
 
 
-exports.updateCourse = (req, res) => {
+exports.updateCourse = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
 
-    const id = Number(req.params.id);
+        if (!Number.isInteger(id)) {
+            return res.status(400).json({
+                message: "Invalid course id"
+            });
+        }
 
-    if (!Number.isInteger(id)) {
-        return res.status(400).json({
-            message: "Invalid course id"
+        const {
+            name,
+            ects,
+            semester,
+            degreeProgramID,
+            type
+        } = req.body;
+
+        if (!name || ects === undefined || semester === undefined || !degreeProgramID || !type) {
+            return res.status(400).json({
+                message: "name, ects, semester, degreeProgramID and type are required"
+            });
+        }
+
+        const validTypes = [
+            "MANDATORY",
+            "ELECTIVE",
+            "VOLUNTARY"
+        ];
+
+        if (!validTypes.includes(type)) {
+            return res.status(400).json({
+                message: "type must be MANDATORY, ELECTIVE or VOLUNTARY"
+            });
+        }
+
+        const updatedCourse = await courseRepository.updateCourse(
+            id,
+            name,
+            ects,
+            semester,
+            degreeProgramID,
+            type
+        );
+
+        if (!updatedCourse) {
+            return res.status(404).json({
+                message: "Course with id " + id + " was not found"
+            });
+        }
+
+        res.json({
+            message: "Course was updated successfully",
+            course: updatedCourse
         });
+
+    } catch (err) {
+        if (err.code === "23503") {
+            return res.status(404).json({ message: "degreeProgramID does not exist" });
+        }
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
     }
-
-    const {
-        name,
-        ects,
-        semester,
-        degreeProgramID,
-        type
-    } = req.body;
-
-
-    if (!name || ects === undefined || semester === undefined || !degreeProgramID || !type) {
-        return res.status(400).json({
-            message: "name, ects, semester, degreeProgramID and type are required"
-        });
-    }
-
-
-    const validTypes = [
-        "MANDATORY",
-        "ELECTIVE",
-        "VOLUNTARY"
-    ];
-
-    if (!validTypes.includes(type)) {
-        return res.status(400).json({
-            message: "type must be MANDATORY, ELECTIVE or VOLUNTARY"
-        });
-    }
-
-
-    const updatedCourse = courseRepository.updateCourse(
-        id,
-        name,
-        ects,
-        semester,
-        degreeProgramID,
-        type
-    );
-
-
-    if (!updatedCourse) {
-        return res.status(404).json({
-            message: "Course with id " + id + " was not found"
-        });
-    }
-
-
-    res.json({
-        message: "Course was updated successfully",
-        course: updatedCourse
-    });
 };
 
 

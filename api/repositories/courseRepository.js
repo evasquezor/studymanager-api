@@ -18,7 +18,6 @@ exports.getAllCourses = async () => {
     return result.rows || null;
 };
 
-
 exports.getCourseById = async (id) => {
     const result = await pool.query(
         `SELECT ${COURSE_COLUMS} FROM courses WHERE id = $1`,
@@ -38,23 +37,20 @@ exports.addCourse = async (name, ects, semester, degreeProgramID, type) => {
 };
 
 
-exports.updateCourse = (id, name, ects, semester, degreeProgramID, type) => {
-
-    const course = database.courses.find(
-        course => course.id === Number(id)
+exports.updateCourse = async (id, name, ects, semester, degreeProgramID, type) => {
+    const result = await pool.query(
+        `UPDATE courses
+         SET name = $1,
+             ects = $2,
+             semester = $3,
+             degree_program_id = $4,
+             type = $5
+         WHERE id = $6
+         RETURNING ${COURSE_COLUMS}`,
+        [name, ects, semester, degreeProgramID, type, id]
     );
 
-    if (!course) {
-        return null;
-    }
-
-    course.name = name;
-    course.ects = ects;
-    course.semester = semester;
-    course.degreeProgramID = degreeProgramID;
-    course.type = type;
-
-    return course;
+    return result.rows[0] || null;
 };
 
 

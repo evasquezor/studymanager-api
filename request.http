@@ -77,3 +77,15 @@ GET http://localhost:3000/students/4/degree-program
 ### assign a degree Programm to a student
 
 PUT http://localhost:3000/students/7/degree-program/5
+
+### Edit a course
+PUT http://localhost:3000/courses/16
+Content-Type: application/json
+
+{
+    "name": "ERP-Systeme",
+    "ects": 6,
+    "semester": 5,
+    "degreeProgramID": 1,
+    "type": "VOLUNTARY"
+}
