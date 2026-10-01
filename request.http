@@ -97,3 +97,5 @@ DELETE http://localhost:3000/courses/16
 GET http://localhost:3000/courses/degree-program/2
 
 ### Get all degree programs
+
+GET http://localhost:3000/degreePrograms/
