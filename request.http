@@ -94,4 +94,6 @@ Content-Type: application/json
 DELETE http://localhost:3000/courses/16
 
 ### Get all courses from a degreeProgramm
-GET http://localhost:3000/courses/degree-program/1
+GET http://localhost:3000/courses/degree-program/2
+
+### Get all degree programs

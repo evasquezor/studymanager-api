@@ -1,11 +1,16 @@
 const degreeProgramRepository = require("../repositories/degreeProgramRepository");
 
-exports.getAllDegreePrograms = (req, res) => {
-    const degreePrograms = degreeProgramRepository.findAllDegreePrograms();
+exports.getAllDegreePrograms =  async (req, res) => {
+    try{
+        const degreePrograms =  await degreeProgramRepository.findAllDegreePrograms();
 
-    res.json({
-        degreePrograms: degreePrograms
-    });
+        res.json({
+            degreePrograms: degreePrograms
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
+    }
 }
 
 exports.addNewDegreePrograms = (req, res) => {

@@ -1,5 +1,4 @@
-const database = require("../data/database.js");
-const pool = require("../database/connection") 
+const pool = require("../database/connection"); 
 
 const COURSE_COLUMS = `
     id,

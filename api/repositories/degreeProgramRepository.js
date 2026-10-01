@@ -1,7 +1,16 @@
-const database = require("../data/database.js");
+const pool = require("../database/connection");
+const  DEGREE_PROGRAMS_COLUMNS = `
+    id,
+    name,
+    total_ects
+`;
 
-exports.findAllDegreePrograms = () => {
-    return database.degreePrograms;
+exports.findAllDegreePrograms = async () => {
+    const result = await pool.query(
+        `SELECT ${DEGREE_PROGRAMS_COLUMNS} FROM degree_programs ORDER BY id`
+    );
+    
+    return result.rows || null;
 }
 
 exports.addNewDegreePrograms = (name,totalEcts) => {
