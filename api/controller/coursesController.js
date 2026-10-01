@@ -198,29 +198,25 @@ exports.deleteCourse =  async (req, res) => {
 };
 
 
-exports.getCoursesByDegreeProgram = (req, res) => {
+exports.getCoursesByDegreeProgram = async (req, res) => {
+    try{
+        const degreeProgramID = Number(req.params.degreeProgramID);
+        if (!Number.isInteger(degreeProgramID)) {
+            return res.status(400).json({
+                message: "Invalid degree program id"
+            });
+        };
+        const courses = await courseRepository.getCoursesByDegreeProgram(
+        degreeProgramID);
 
-    const degreeProgramID = Number(req.params.degreeProgramID);
-    const semester = req.query.semester;
-
-    if (!Number.isInteger(degreeProgramID)) {
-        return res.status(400).json({
-            message: "Invalid degree program id"
+        res.json({
+            courses: courses
         });
+    }catch (err){
+        if (err.code === "23503") {
+            return res.status(404).json({ message: "degreeProgramID does not exist" });
+        }
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler" });
     }
-
-    if (semester !== undefined && !Number.isInteger(Number(semester))) {
-        return res.status(400).json({
-            message: "Invalid semester"
-        });
-    }
-
-    const courses = courseRepository.getCoursesByDegreeProgram(
-        degreeProgramID,
-        semester
-    );
-
-    res.json({
-        courses: courses
-    });
-};
+}; 

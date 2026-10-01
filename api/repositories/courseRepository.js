@@ -64,17 +64,11 @@ exports.deleteCourse = async (id) => {
 };
 
 
-exports.getCoursesByDegreeProgram = (degreeProgramID, semester) => {
+exports.getCoursesByDegreeProgram = async (degreeProgramID) => {
+    const result = await pool.query(
+        `SELECT ${COURSE_COLUMS} FROM courses WHERE degree_program_id = $1`,
+        [degreeProgramID]
+    )
 
-    let courses = database.courses.filter(
-        course => course.degreeProgramID === Number(degreeProgramID)
-    );
-
-    if (semester !== undefined) {
-        courses = courses.filter(
-            course => course.semester === Number(semester)
-        );
-    }
-
-    return courses;
-}
+    return result.rows || null;
+};
