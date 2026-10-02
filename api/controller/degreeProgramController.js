@@ -34,13 +34,13 @@ exports.addNewDegreePrograms = async (req, res) => {
     }
 }
 
-exports.deleteDegreeProgram = (req, res) => {
+exports.deleteDegreeProgram = async (req, res) => {
     try{
         const id = Number(req.params.id);
         if(!Number.isInteger(id)) {
             res.status(404).json({ message: "Ungültige ID"});
         };
-        const deletedDegreeProgram = degreeProgramRepository.deleteDegreeProgramm(id);
+        const deletedDegreeProgram = await degreeProgramRepository.deleteDegreeProgramm(id);
         res.json({
             DegreePrograms: deletedDegreeProgram
         })

@@ -105,6 +105,10 @@ POST http://localhost:3000/degreePrograms/
 Content-Type: application/json
 
 {
-    "name": "Software Engineer Bachelor",
+    "name": "Sex intruction",
     "totalEcts": 120
 }
+
+###
+
+DELETE http://localhost:3000/degreePrograms/5

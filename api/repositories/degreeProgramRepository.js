@@ -24,7 +24,7 @@ exports.addNewDegreePrograms = async (name,totalEcts) => {
 
 exports.deleteDegreeProgramm = async (id) => {
    const result = await pool.query(
-    `DELETE FROM degree_programs WHERE id = $id RETURNING ${DEGREE_PROGRAMS_COLUMNS}`,
+    `DELETE FROM degree_programs WHERE id = $1 RETURNING ${DEGREE_PROGRAMS_COLUMNS}`,
     [id]
    );
 
