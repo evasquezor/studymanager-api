@@ -46,30 +46,39 @@ exports.deleteDegreeProgram = async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(500).json({error: "Datenbankfehler"})
+        res.status(500).json({error: "Datenbankfehler"});
     }
 }
 
 
-exports.getDegreeProgramById = (req, res) => {
-    const id = Number(req.params.id);
+exports.getDegreeProgramById = async (req, res) => {
 
-    if (!id) {
-        return res.status(400).json({
-            message: "id is missing"
-        })
-    }
+    try{
+        const id = Number(req.params.id);
 
-    const degreeProgram = degreeProgramRepository.getDegreeProgramById(id);
+        if (!Number.isInteger(id)) {
+            return res.status(400).json({
+                message: "Wrong id"
+            });
+        };
 
-    if (degreeProgram == null) {
-        return res.status(404).json({
-            message: "degree program not found"
+        const degreeProgram = await degreeProgramRepository.getDegreeProgramById(id);
+
+        if (degreeProgram == null) {
+            return res.status(404).json({
+                message: "degree program not found"
+            });
+        }
+
+        return res.json({
+            degreeProgram: degreeProgram
         });
-    }
 
-    return res.json({
-        degreeProgram: degreeProgram
-    })
+    } catch (err){
+        console.error(err);
+        res.status(500).json({error: "Datenbankfehler"});
+
+    }
+    
 
 }

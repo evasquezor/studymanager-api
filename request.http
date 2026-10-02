@@ -109,6 +109,8 @@ Content-Type: application/json
     "totalEcts": 120
 }
 
-###
-
+### Delete a DegreeProgramm
 DELETE http://localhost:3000/degreePrograms/5
+
+### Get a degreeProgramm from a id
+GET http://localhost:3000/degreePrograms/5

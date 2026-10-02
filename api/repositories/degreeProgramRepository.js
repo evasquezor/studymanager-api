@@ -31,10 +31,11 @@ exports.deleteDegreeProgramm = async (id) => {
    return result.rows[0] || null;
 }
 
-exports.getDegreeProgramById = (id) => {
-    const degreeProgram = database.degreePrograms.find(degreeProgram => degreeProgram.id === Number(id));
+exports.getDegreeProgramById = async (id) => {
+    const result = await pool.query(
+        `SELECT ${DEGREE_PROGRAMS_COLUMNS} FROM degree_programs WHERE id = $1`,
+        [id]
+    );
 
-    if (degreeProgram == null) return null;
-
-    return degreeProgram;
-}
+    return result.rows[0] || null;
+};
