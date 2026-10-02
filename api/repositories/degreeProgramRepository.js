@@ -13,20 +13,13 @@ exports.findAllDegreePrograms = async () => {
     return result.rows || null;
 }
 
-exports.addNewDegreePrograms = (name,totalEcts) => {
-    const newId = database.students.length > 0
-            ? Math.max(...database.students.map(student => student.id)) + 1
-            : 1;
-
-    const newDegreeProgram = {
-        id: newId,
-        name: name,
-        totalEcts: totalEcts
-    };
-
-    database.degreePrograms.push(newDegreeProgram)
-
-    return newDegreeProgram;
+exports.addNewDegreePrograms = async (name,totalEcts) => {
+    const result = await pool.query(
+        `INSERT INTO degree_programs (name, total_ects) VALUES ($1, $2) RETURNING ${DEGREE_PROGRAMS_COLUMNS}`,
+        [name, totalEcts]
+    );
+    
+    return result.rows[0] || null;
 }
 
 exports.deleteDegreeProgramm = (id) => {

@@ -13,23 +13,25 @@ exports.getAllDegreePrograms =  async (req, res) => {
     }
 }
 
-exports.addNewDegreePrograms = (req, res) => {
-    const name = req.body.name
-    const totalEcts = req.body.totalEcts
+exports.addNewDegreePrograms = async (req, res) => {
+    try {
+        const name = req.body.name
+        const totalEcts = req.body.totalEcts
 
-    if (!name || !totalEcts) {
-        return res.status(400).json({
-            message: "Name or totalEcts are missing"
+        if (!name || !totalEcts) {
+            return res.status(400).json({
+                message: "Name or totalEcts are missing"
+            })
+        };
+
+        const newDegreeProgram = await degreeProgramRepository.addNewDegreePrograms(name, totalEcts);
+        res.json({
+            newDegreeProgram: newDegreeProgram
         })
+    }catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler"})
     }
-
-    const newDegreeProgram = degreeProgramRepository.addNewDegreePrograms(name, totalEcts);
-
-    const degreePrograms = degreeProgramRepository.findAllDegreePrograms();
-
-    res.json({
-        DegreePrograms : degreePrograms
-    })
 }
 
 exports.deleteDegreeProgram = (req, res) => {
