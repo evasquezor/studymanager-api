@@ -1,6 +1,4 @@
-// const database = require("../data/database.js");
-const pool = require("../database/connection") 
-const enrollmentRepository = require("../repositories/enrollmentRepository")
+const pool = require("../database/connection"); 
 
 const STUDENT_COLUMNS = `
     id,

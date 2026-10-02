@@ -1,7 +1,18 @@
-const database = require("../data/database.js");
+const pool = require("../database/connection");
 
-exports.getAllEnrollments = () => {
-    return database.enrollments
+const ENROLLMENTS_COLUMNS = `
+    id,
+    student_id,
+    course_id,
+    status,
+    grade
+`;
+
+exports.getAllEnrollments = async () => {
+    const result = await pool.query(
+        `SELECT ${ENROLLMENTS_COLUMNS} FROM enrollments ORDER BY id`
+    )
+    return result.rows || null;
 }
 exports.enrollStudent = (studentId, courseId, status) => {
 

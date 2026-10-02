@@ -2,13 +2,18 @@ const enrollmentRepository = require("../repositories/enrollmentRepository")
 const studentRepository = require("../repositories/studentRepository")
 const courseRepository = require ("../repositories/courseRepository")
 
-exports.getAllEnrollments = (req,res) => {
-    const enrollments = enrollmentRepository.getAllEnrollments();
+exports.getAllEnrollments = async (req,res) => {
+    try{
+    const enrollments = await enrollmentRepository.getAllEnrollments();
 
     res.json({
         enrollments: enrollments
-    })
-}
+    });
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ error: "Datenbankfehler"});
+    };
+};
 
 exports.enrollStudent = (req, res) => {
     
