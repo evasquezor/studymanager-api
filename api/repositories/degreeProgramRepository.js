@@ -22,18 +22,13 @@ exports.addNewDegreePrograms = async (name,totalEcts) => {
     return result.rows[0] || null;
 }
 
-exports.deleteDegreeProgramm = (id) => {
-    const degreeProgramIndex = database.degreePrograms.findIndex(degreeProgram => degreeProgram.id === id);
+exports.deleteDegreeProgramm = async (id) => {
+   const result = await pool.query(
+    `DELETE FROM degree_programs WHERE id = $id RETURNING ${DEGREE_PROGRAMS_COLUMNS}`,
+    [id]
+   );
 
-    if(degreeProgramIndex === -1) {
-        return null
-    }
-
-    const deletedDegreeProgram = database.degreePrograms[degreeProgramIndex];
-
-    database.degreePrograms.splice(degreeProgramIndex, 1);
-
-    return deletedDegreeProgram
+   return result.rows[0] || null;
 }
 
 exports.getDegreeProgramById = (id) => {

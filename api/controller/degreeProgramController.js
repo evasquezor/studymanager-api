@@ -35,15 +35,21 @@ exports.addNewDegreePrograms = async (req, res) => {
 }
 
 exports.deleteDegreeProgram = (req, res) => {
-    const id = Number(req.params.id)
-    const deletedDegreeProgram = degreeProgramRepository.deleteDegreeProgramm(id);
-    const degreePrograms = degreeProgramRepository.findAllDegreePrograms();
-
-    res.json({
-        DegreePrograms: degreePrograms
-    })
-
+    try{
+        const id = Number(req.params.id);
+        if(!Number.isInteger(id)) {
+            res.status(404).json({ message: "Ungültige ID"});
+        };
+        const deletedDegreeProgram = degreeProgramRepository.deleteDegreeProgramm(id);
+        res.json({
+            DegreePrograms: deletedDegreeProgram
+        })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Datenbankfehler"})
+    }
 }
+
 
 exports.getDegreeProgramById = (req, res) => {
     const id = Number(req.params.id);
