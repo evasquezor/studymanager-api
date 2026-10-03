@@ -49,23 +49,27 @@ exports.enrollStudent = async (req, res) => {
     }
 };
 
-exports.getStudentEnrollments = (req, res) => {
-    const studentId = Number(req.params.studentId)
+exports.getStudentEnrollments = async (req, res) => {
+    try{
+        const studentId = Number(req.params.studentId);
+        const student = studentRepository.findStudentById(studentId);
 
-    const student = studentRepository.findStudentById(studentId)
+        if (!student) {
+            return res.status(404).json({
+                message: "Student with id " + studentId + "was not found"
+            });
+        };
 
-    if (!student) {
-        return res.status(404).json({
-            message: "Student with id " + studentId + "was not found"
+        const studentEnrollments =  await enrollmentRepository.getStudentsEnrollments(studentId);
+
+        return res.json({
+            enrollments: studentEnrollments
         });
-    }
-
-    const studentEnrollments = enrollmentRepository.getStudentsEnrollments(studentId)
-
-    return res.json({
-        enrollments: studentEnrollments
-    })
-}
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal server error" });
+    };
+};
 
 exports.getStudentFinishedCourses = (req, res) => {
     const studentId = Number(req.params.studentId)

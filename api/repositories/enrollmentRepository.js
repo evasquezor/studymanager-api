@@ -26,12 +26,12 @@ exports.enrollStudent = async (studentId, courseId) => {
     return result.rows[0] || null;
 };
 
-exports.getStudentsEnrollments = (studentId) => {
-    const enrollments = database.enrollments;
-    return enrollments.filter(
-        (enrollment) => enrollment.studentId === Number(studentId)
+exports.getStudentsEnrollments = async (studentId) => {
+    const result = await pool.query(
+        `SELECT ${ENROLLMENTS_COLUMNS} FROM enrollments WHERE student_id = $1`,
+        [studentId]
     );
-
+    return result.rows || null;
 }
 
 exports.getStudentFinishedCourses = (studentId) => {

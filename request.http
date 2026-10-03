@@ -15,7 +15,7 @@ GET http://localhost:3000/courses
 GEt http://localhost:3000/courses/2
 
 ### get all enrollments from a student 
-GET http://localhost:3000/students/1/enrollments
+GET http://localhost:3000/students/3/enrollments
 
 ### get all finished enrollments from a studeent
 GET http://localhost:3000/students/1/enrollments/finished
