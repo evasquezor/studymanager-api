@@ -120,3 +120,11 @@ GET http://localhost:3000/enrollments
 
 ### enroll a student
 POST http://localhost:3000/students/3/courses/1/enroll
+
+### change the status from a enrollment
+PATCH http://localhost:3000/enrollments/6/status
+Content-Type: application/json
+
+{
+    "status": "IN_PROGRESS"
+}

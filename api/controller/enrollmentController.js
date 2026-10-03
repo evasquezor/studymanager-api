@@ -95,35 +95,38 @@ exports.getStudentFinishedCourses = (req, res) => {
     })
 }
 
-exports.changeEnrollmentStatus = (req, res) => {
-    const studentId = Number(req.params.studentId);
-    const courseId = Number(req.params.courseId);
-    const status = req.body.status;
-    const allowedStatuses = ["PLANNED", "ENROLLED", "IN_PROGRESS", "FINISHED"];
+exports.changeEnrollmentStatus = async (req, res) => {
+    try {
+        const enrollmentId = Number(req.params.enrollmentId);
+        const status = req.body.status;
+        const allowedStatuses = ["PLANNED", "ENROLLED", "IN_PROGRESS", "FINISHED"];
 
-    if (!allowedStatuses.includes(status)) {
-        return res.status(400).json({
-            message: "status must be one of: " + allowedStatuses.join(", ")
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({
+                message: "status must be one of: " + allowedStatuses.join(", ")
+            });
+        }
+
+        const enrollment = await enrollmentRepository.changeEnrollmentStatus(
+            enrollmentId,
+            status
+        );
+
+        if (!enrollment) {
+            return res.status(404).json({
+                message: "Enrollment with id " + enrollmentId + " was not found"
+            });
+        }
+
+        return res.json({
+            message: "Enrollment status was changed successfully",
+            enrollment
         });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-
-    const enrollment = enrollmentRepository.changeEnrollmentStatus(
-        studentId,
-        courseId,
-        status
-    );
-
-    if (!enrollment) {
-        return res.status(404).json({
-            message: "Enrollment for student " + studentId + " and course " + courseId + " was not found"
-        });
-    }
-
-    return res.json({
-        message: "Enrollment status was changed successfully",
-        enrollment
-    });
-}
+};
 
 exports.deleteEnrollment = (req, res) => {
     const enrollmentId = Number(req.params.enrollmentId);

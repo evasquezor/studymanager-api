@@ -58,19 +58,17 @@ exports.getStudentFinishedCourses = (studentId) => {
     return studentCourses
 }
 
-exports.changeEnrollmentStatus = (studentId, courseId, status) => {
-    const enrollment = database.enrollments.find(
-        (enrollment) => enrollment.studentId === studentId && enrollment.courseId === courseId
+exports.changeEnrollmentStatus = async (enrollmentId, status) => {
+    const result = await pool.query(
+        `UPDATE enrollments
+         SET status = $1
+         WHERE id = $2
+         RETURNING ${ENROLLMENTS_COLUMNS}`,
+        [status, enrollmentId]
     );
 
-    if (!enrollment) {
-        return null;
-    }
-
-    enrollment.status = status;
- 
-    return enrollment;
-}
+    return result.rows[0] || null;
+};
 
 exports.deleteEnrollment = (enrollmentId) => {
     const enrollmentIndex = database.enrollments.findIndex(enrollment => enrollment.id === enrollmentId);

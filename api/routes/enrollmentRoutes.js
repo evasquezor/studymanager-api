@@ -14,10 +14,7 @@ router.get("/students/:studentId/enrollments", enrollmentController.getStudentEn
 
 router.get("/students/:studentId/enrollments/finished", enrollmentController.getStudentFinishedCourses)
 
-router.patch(
-    "/students/:studentId/courses/:courseId/enrollment/status",
-    enrollmentController.changeEnrollmentStatus
-)
+router.patch("/enrollments/:enrollmentId/status", enrollmentController.changeEnrollmentStatus);
 
 router.delete("/enrollment/:enrollmentId/delete", enrollmentController.deleteEnrollment)
 
