@@ -14,23 +14,17 @@ exports.getAllEnrollments = async () => {
     )
     return result.rows || null;
 }
-exports.enrollStudent = (studentId, courseId, status) => {
 
-     const newId = database.enrollments.length > 0
-            ? Math.max(...database.enrollments.map(enrollment => enrollment.id)) + 1
-            : 1;
+exports.enrollStudent = async (studentId, courseId) => {
+    const result = await pool.query(
+        `INSERT INTO enrollments (student_id, course_id)
+         VALUES ($1, $2)
+         RETURNING ${ENROLLMENTS_COLUMNS}`,
+        [studentId, courseId]
+    );
 
-    const newEnrollment = {
-        id: newId,
-        studentId: studentId,
-        courseId: courseId,
-        status: status
-    }
-
-    database.enrollments.push(newEnrollment);
-
-    return newEnrollment;
-}
+    return result.rows[0] || null;
+};
 
 exports.getStudentsEnrollments = (studentId) => {
     const enrollments = database.enrollments;

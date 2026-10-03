@@ -15,39 +15,39 @@ exports.getAllEnrollments = async (req,res) => {
     };
 };
 
-exports.enrollStudent = (req, res) => {
-    
-    const studentId = Number(req.params.studentId);
-    const courseId = Number(req.params.courseId)
+exports.enrollStudent = async (req, res) => {
+    try {
+        const studentId = Number(req.params.studentId);
+        const courseId = Number(req.params.courseId);
 
-    const student = studentRepository.findStudentById(studentId)
+        const student = await studentRepository.findStudentById(studentId);
+        if (!student) {
+            return res.status(404).json({
+                message: "Student with id " + studentId + " was not found"
+            });
+        }
 
-    if (!student) {
-        return res.status(404).json({
-            message: "Student with id " + studentId + "was not found"
+        const course = await courseRepository.getCourseById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                message: "Course with id " + courseId + " was not found"
+            });
+        }
+
+        const enrollment = await enrollmentRepository.enrollStudent(
+            studentId,
+            courseId
+        );
+
+        return res.status(201).json({
+            message: "Student successfully enrolled",
+            enrollment
         });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-
-    const course = courseRepository.getCourseById(courseId)
-
-    if(!course) {
-        return res.status(404).json({
-            message: "Course with id " + courseId + " was not found"
-        });
-    }
-
-    const enrollment = enrollmentRepository.enrollStudent(
-        studentId,
-        courseId,
-        "ENROLLED"
-    );
-
-    return res.status(201).json({
-        message: "Student successfully enrolled",
-        enrollment
-    });
-
-}
+};
 
 exports.getStudentEnrollments = (req, res) => {
     const studentId = Number(req.params.studentId)

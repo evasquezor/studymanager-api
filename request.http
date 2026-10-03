@@ -117,3 +117,6 @@ GET http://localhost:3000/degreePrograms/5
 
 ### Get all enrollments
 GET http://localhost:3000/enrollments
+
+### enroll a student
+POST http://localhost:3000/students/3/courses/1/enroll
