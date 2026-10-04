@@ -6,7 +6,7 @@ A REST API for managing and tracking students' academic progress.
 
 * Create, update, and delete students
 * Store and manage degree programs
-* Manage courses and modules
+* Manage courses 
 * Store ECTS credits for each course
 * Record grades for completed courses
 * Manage enrolled and completed courses
@@ -17,7 +17,6 @@ A REST API for managing and tracking students' academic progress.
 * Display remaining ECTS credits
 * Track the total number of enrolled courses
 * Monitor academic progress
-* Provide a dashboard with key study information
 * Persist data in a PostgreSQL database
 * Expose RESTful CRUD endpoints for all resources
 
@@ -26,9 +25,50 @@ A REST API for managing and tracking students' academic progress.
 * Node.js
 * Express.js
 * PostgreSQL
-* Prisma
 * JavaScript
 
-## Project Goal
+## Architecture
 
-The goal of this project is to develop a REST API that helps students manage their academic information. The API allows users to store courses, grades, and ECTS credits while providing insights into academic progress and current grade averages.
+* The studyManager API follows a layerred backend architecture to separate HTTP handling, application logic and database access
+                    ┌──────────────┐
+                    │    Client    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │    Routes    │
+                    └──────┬───────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │   Controllers   │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │    Services     │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │  Repositories   │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │   PostgreSQL    │
+                  └─────────────────┘
+# Routes
+* Define the available REST API endpoints and route incoming HTTP requests to the appropriate controllers.
+
+# Controllers
+* Handle HTTP requests and responses, validate incoming data and delegate business operations to the service layer.
+
+# Services
+* Contain the application's business logic and coordinate operations between controllers and repositories.
+
+# Repositories
+* Handle database access and encapsulate SQL queries and data persistence logic.
+
+# PostgreSQL
+* Provides persistent storage for students, degree programs, courses and enrollments.
