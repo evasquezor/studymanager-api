@@ -122,12 +122,20 @@ GET http://localhost:3000/enrollments
 POST http://localhost:3000/students/3/courses/1/enroll
 
 ### change the status from a enrollment
-PATCH http://localhost:3000/enrollments/6/status
+PATCH http://localhost:3000/enrollments/5/status
 Content-Type: application/json
 
 {
-    "status": "IN_PROGRESS"
+    "status": "FINISHED"
 }
 
 ### DELETE an enrollment
 DELETE http://localhost:3000/enrollment/6/delete
+
+### change the grade of an enrollment if this is finished
+PATCH http://localhost:3000/enrollment/5/grade
+Content-Type: application/json
+
+{
+    "grade": 3.5
+}

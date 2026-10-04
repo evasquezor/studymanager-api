@@ -79,14 +79,11 @@ exports.deleteEnrollment = async (enrollmentId) => {
     return result.rows[0] || null;
 }
 
-exports.setGrade = (enrollmentId, grade) => {
-    const enrollment = database.enrollments.find((enrollment) => enrollment.id === enrollmentId);
+exports.setGrade = async (enrollmentId, grade) => {
+    const result = await pool.query(
+        `UPDATE enrollments SET grade = $1 WHERE id = $2 RETURNING ${ENROLLMENTS_COLUMNS}`,
+        [grade, enrollmentId]
+    );
 
-    if (!enrollment) {
-        return null
-    }
-
-    enrollment.grade = grade;
-
-    return enrollment;
+    return result.rows[0] || null;
 }
