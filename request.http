@@ -128,3 +128,6 @@ Content-Type: application/json
 {
     "status": "IN_PROGRESS"
 }
+
+### DELETE an enrollment
+DELETE http://localhost:3000/enrollment/6/delete

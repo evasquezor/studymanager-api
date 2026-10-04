@@ -70,18 +70,13 @@ exports.changeEnrollmentStatus = async (enrollmentId, status) => {
     return result.rows[0] || null;
 };
 
-exports.deleteEnrollment = (enrollmentId) => {
-    const enrollmentIndex = database.enrollments.findIndex(enrollment => enrollment.id === enrollmentId);
-    
-        if (enrollmentIndex === -1) {
-            return null;
-        }
-    
-        const deletedEnrollment = database.enrollments[enrollmentIndex];
-    
-        database.enrollments.splice(enrollmentIndex, 1);
-    
-        return deletedEnrollment;
+exports.deleteEnrollment = async (enrollmentId) => {
+    const result = await pool.query(
+        `DELETE FROM enrollments WHERE id = $1  RETURNING ${ENROLLMENTS_COLUMNS}`,
+        [enrollmentId]
+    );
+
+    return result.rows[0] || null;
 }
 
 exports.setGrade = (enrollmentId, grade) => {

@@ -128,23 +128,32 @@ exports.changeEnrollmentStatus = async (req, res) => {
     }
 };
 
-exports.deleteEnrollment = (req, res) => {
-    const enrollmentId = Number(req.params.enrollmentId);
+exports.deleteEnrollment = async (req, res) => {
 
-    const deleteEnrollment = enrollmentRepository.deleteEnrollment(enrollmentId);
+    try {
+        const enrollmentId = Number(req.params.enrollmentId);
 
-    if (!deleteEnrollment) {
-        return res.status(404).json({
-            message : "Enrollment was not found"
-        })
+        if (!Number.isInteger(enrollmentId)) {
+            return res.status(400).json({ message: "Ungültige ID"});
+        };
+
+        const deleteEnrollment = await enrollmentRepository.deleteEnrollment(enrollmentId);
+
+        if (!deleteEnrollment) {
+            return res.status(404).json({
+                message : "Enrollment was not found"
+            });
+        };
+
+        res.json({
+            message: "Enrollment with id: " + deleteEnrollment.id + " was deleted",
+            enrollment: deleteEnrollment,
+        });
+    } catch(err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal server error" });
     }
-
-    res.json({
-        message: "Enrollment with id: " + deleteEnrollment.id + " was deleted",
-        enrollment: deleteEnrollment,
-        enrollments: enrollmentRepository.getAllEnrollments()
-
-    })
+    
 }
 
 exports.setGrade = (req, res) => {
