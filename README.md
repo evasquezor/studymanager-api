@@ -30,6 +30,7 @@ A REST API for managing and tracking students' academic progress.
 ## Architecture
 
 * The studyManager API follows a layerred backend architecture to separate HTTP handling, application logic and database access
+```text
                     ┌──────────────┐
                     │    Client    │
                     └──────┬───────┘
@@ -58,17 +59,17 @@ A REST API for managing and tracking students' academic progress.
                   ┌─────────────────┐
                   │   PostgreSQL    │
                   └─────────────────┘
-# Routes
+### Routes
 * Define the available REST API endpoints and route incoming HTTP requests to the appropriate controllers.
 
-# Controllers
+### Controllers
 * Handle HTTP requests and responses, validate incoming data and delegate business operations to the service layer.
 
-# Services
+### Services
 * Contain the application's business logic and coordinate operations between controllers and repositories.
 
-# Repositories
+### Repositories
 * Handle database access and encapsulate SQL queries and data persistence logic.
 
-# PostgreSQL
+### PostgreSQL
 * Provides persistent storage for students, degree programs, courses and enrollments.
