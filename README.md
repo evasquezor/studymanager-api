@@ -61,7 +61,7 @@ A REST API for managing and tracking students' academic progress.
                   └─────────────────┘
 ```
 
-##' Routes
+### Routes
 * Define the available REST API endpoints and route incoming HTTP requests to the appropriate controllers.
 
 ### Controllers
